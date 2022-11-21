@@ -1,34 +1,43 @@
 import random
 
 
-def partition(array, low, high, piv):
-    pivot = array[high]
-    i = low - 1
-    for j in range(low, high):
-        if array[j] <= pivot:
+def quicksort(arr, start, stop):
+    if start < stop:
+        pivotindex = partitionrand(arr, start, stop)
+        quicksort(arr, start, pivotindex)
+        quicksort(arr, pivotindex + 1, stop)
+
+
+def partitionrand(arr, start, stop):
+    randpivot = random.randrange(start, stop)
+    arr[start], arr[randpivot] = arr[randpivot], arr[start]
+    return partition(arr, start, stop)
+
+
+def partition(arr, start, stop):
+    pivot = start
+    i = start - 1
+    j = stop + 1
+    while True:
+        while True:
             i = i + 1
-            (array[i], array[j]) = (array[j], array[i])
-    (array[i + 1], array[high]) = (array[high], array[i + 1])
-    return i + 1
+            if arr[i] >= arr[pivot]:
+                break
+        while True:
+            j = j - 1
+            if arr[j] <= arr[pivot]:
+                break
+        if i >= j:
+            return j
+        arr[i], arr[j] = arr[j], arr[i]
 
 
-def quickSort(array, low, high):
-    if low < high:
-        if randomized:
-            piv = random.randrange(low, high)
-        else:
-            piv = high
-        pi = partition(array, low, high, piv)
-        quickSort(array, low, pi - 1)
-        quickSort(array, pi + 1, high)
+#array = [10, 7, 8, 9, 1, 5]
+n = int(input("Enter length of array: "))
+array = []
+for i in range(n):
+    a = int(input("Enter element: "))
+    array.append(a)
+quicksort(array, 0, n - 1)
+print(array)
 
-
-randomized = bool(int(input("Enter 0 for fixed, 1 for randomized pivot : ")))
-data = [1, 7, 4, 1, 10, 9, -2]
-print("Unsorted Array")
-print(data)
-size = len(data)
-randomized = True
-quickSort(data, 0, size - 1)
-print("Sorted Array in Ascending Order:")
-print(data)
